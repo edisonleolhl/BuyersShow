@@ -1,3 +1,5 @@
+- 开发笔记：https://www.jianshu.com/p/c84f943eca5c
+
 - 环境要求：Python3.x，chromedriver.exe（项目已有）
 
 - 运行：在当前项目中，打开命令行，输入
