@@ -18,12 +18,12 @@ def jd(driver, time, re, urllib, path, ActionChains, Keys):
         img_ele = driver.find_element_by_xpath (".//*/img[@class='J-photo-img']")
         p, d, c = '', '', ''
         try:
-            p = driver.find_element_by_xpath (".//*/div[@class='p-features']/ul").text.replace ('/', '-').replace ('\\',
-                                                                                                                   '--').replace (
-                '\n', '-')  # p = '【超10万好评 5升经典爆款】'
-            d = driver.find_element_by_xpath (".//*/div[@class='comment-time type-item']").text  # d = '2018.01.05'
-            c = driver.find_element_by_xpath (".//*/div[@class='p-comment']").text.replace ('/', '-').replace ('\\',
-                                                                                                               '--')
+            p = driver.find_element_by_xpath (".//*/div[@class='p-features']/ul").text.replace('/', '-').replace('\\', '--').replace('<', '[').replace('>', ']').replace(':','：').replace(
+    '?','？').replace('"','``').replace('|', '$').replace ('\n', '-')  # p = '【超10万好评 5升经典爆款】'
+            d = driver.find_element_by_xpath (".//*/div[@class='comment-time type-item']").text.replace('/', '-').replace('\\', '--').replace('<', '[').replace('>', ']').replace(':','：').replace(
+    '?','？').replace('"','``').replace('|', '$').replace ('\n', '-')  # d = '2018.01.05'
+            c = driver.find_element_by_xpath (".//*/div[@class='p-comment']").text.replace('/', '-').replace('\\', '--').replace('<', '[').replace('>', ']').replace(':','：').replace(
+    '?','？').replace('"','``').replace('|', '$').replace ('\n', '-')
         except Exception as e:
             print ("ERROR happens when getting corresponding property of img :::", e)
 

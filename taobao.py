@@ -27,10 +27,12 @@ def taobao(driver, time, re, urllib, path, ActionChains, Keys):
                     d = ''
                 p = re.findall (r'(?<=[0-9][0-9]:[0-9][0-9]).+$', p.text)
                 if len(p) > 0:
-                    p = p[0].replace ('/', '-').replace ('\\', '--')  # 删掉日期时间，得到款式等信息
+                    p = p[0].replace('/', '-').replace('\\', '--').replace('<', '[').replace('>', ']').replace(':','：').replace(
+    '?','？').replace('"','``').replace('|', '$').replace ('\n', '-')  # 删掉日期时间，得到款式等信息
                 else:
                     p = ''
-                c = img_ele.find_element_by_xpath(".//../../../preceding-sibling::div[1]").text.replace ('/', '-').replace ('\\', '--')
+                c = img_ele.find_element_by_xpath(".//../../../preceding-sibling::div[1]").text.replace('/', '-').replace('\\', '--').replace('<', '[').replace('>', ']').replace(':','：').replace(
+    '?','？').replace('"','``').replace('|', '$').replace ('\n', '-')
             except Exception as e:
                 print("ERROR happens when getting corresponding property of img :::", e)
             datetime_list.append (d)

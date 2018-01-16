@@ -17,13 +17,14 @@ def jd_hk(driver, time, re, urllib, path, ActionChains, Keys):
             p, d, c = '', '', ''
             try:
                 p = img_ele.find_element_by_xpath (
-                    "./../../../../../../../preceding-sibling::td[1]/div[@class='type-item']").text.replace (
-                    '/', '-').replace ('\\', '--').replace ('\n', '-')  # p = '颜色：MMZ 600ML 黑色'
+                    "./../../../../../../../preceding-sibling::td[1]/div[@class='type-item']").text.replace('/', '-').replace('\\', '--').replace('<', '[').replace('>', ']').replace(':','：').replace(
+    '?','？').replace('"','``').replace('|', '$').replace ('\n', '-')  # p = '颜色：MMZ 600ML 黑色'
                 d = img_ele.find_element_by_xpath (
-                    "./../../../../../../../preceding-sibling::td[1]/p[@class='time']").text.replace (
-                    '/','-').replace ('\\', '--')
+                    "./../../../../../../../preceding-sibling::td[1]/p[@class='time']").text.replace('/', '-').replace('\\', '--').replace('<', '[').replace('>', ']').replace(':','：').replace(
+    '?','？').replace('"','``').replace('|', '$').replace ('\n', '-')
                 c = img_ele.find_element_by_xpath (
-                    "./../../../../../preceding-sibling::div[1]/span[@class='desc']").text
+                    "./../../../../../preceding-sibling::div[1]/span[@class='desc']").text.replace('/', '-').replace('\\', '--').replace('<', '[').replace('>', ']').replace(':','：').replace(
+    '?','？').replace('"','``').replace('|', '$').replace ('\n', '-')
             except Exception as e:
                 print ("ERROR happens when getting corresponding property of img :::", e)
             datetime_list.append (d)
@@ -33,7 +34,9 @@ def jd_hk(driver, time, re, urllib, path, ActionChains, Keys):
         # 四个列表长度一致，所以可以用同一个指针i来对四个列表同步遍历
         for i in range (len (img_ele_list)):
             url = img_ele_list[i].get_attribute ('src').replace ('46x46', '460x460')
-            with open (path + '/' + property_list[i] + '-' + datetime_list[i] + '-' + str (time.time ()) + '.jpg',
+            file_name = path + '/' + property_list[i] + '-' + datetime_list[i] + '-' + str (time.time ()) + '.jpg'
+            print("file_name = ", file_name)
+            with open (file_name,
                        'wb+') as f_img:
                 try:
                     f_img.write (urllib.request.urlopen (url).read ())
@@ -44,14 +47,18 @@ def jd_hk(driver, time, re, urllib, path, ActionChains, Keys):
                            % (property_list[i], datetime_list[i], comment_list[i], url))
 
         # ---------------翻页---------------
+        time.sleep(1)
         try:
-            current_page = driver.find_element_by_xpath(".//*/div[@class='ui-page']/a[@class='ui-page-curr']")
-            print("current_page = ", current_page.text)
-            next_page = current_page.find_element_by_xpath("./following-sibling::a")
-            ActionChains(driver).move_to_element(next_page).click(next_page).perform()
-            time.sleep (1)
+            last_ahref = driver.find_element_by_xpath(".//*/div[@id='detail']/div[@class='tab-con']/div[@class='detail-elevator-floor hide'][2]/div[@id='comment']/div[@id='comments-list']/div[@id='comment-4']/div[@class='com-table-footer']/div[@class='ui-page-wrap clearfix']/div[@class='ui-page']"
+                                                       "/a[last()]")
+            # 当到达最后一页时，“下一页”标签消失，，所以判断最后一个a标签的文本如果是数字的话，那么则到达最后一页，即退出
+            if last_ahref.text.isdigit():
+                exit()
+            else:
+                last_ahref.click()
+                time.sleep(1)
         except:
-            print("last img collected")
+            print("only one page with img")
             exit()
 
 

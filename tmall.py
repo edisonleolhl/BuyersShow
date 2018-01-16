@@ -1,7 +1,8 @@
 def tmall(driver, time, re, urllib, path, ActionChains, Keys):
     driver.maximize_window()
     time.sleep(3)
-    driver.find_element_by_xpath(".//*/li[@id='J_ItemRates']/div[@class='tm-indcon']").click()
+    driver.find_element_by_xpath(".//*/em[@class='J_ReviewsCount']").click()
+    # driver.find_element_by_xpath(".//*/li[@id='J_ItemRates']/div[@class='tm-indcon']").click()  #有时候这个按钮无法点击，所以注释掉这个
     time.sleep(1)
     driver.find_element_by_xpath(".//*/span[@class='rate-filter']/input[@class='rate-list-picture rate-radio-group']").send_keys(Keys.SPACE)
     time.sleep(3)

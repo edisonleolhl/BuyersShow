@@ -11,11 +11,14 @@ from tmall_hk import tmall_hk
 from jd import jd
 from jd_hk import jd_hk
 
+# windows文件名中不能包含下列字符：\/:*?"<>|
+
 item_url = input("Please input the item url:") # 在终端输入url时，最后加个空格，再回车，不然Pycharm会自动打开这个url
 driver = webdriver.Chrome(executable_path='chromedriver.exe')
 driver.get(item_url)
 
-item_name = driver.title.replace('/', '-').replace('\\', '--').replace('《', '[').replace('》', ']')
+item_name = driver.title.replace('/', '-').replace('\\', '--').replace('<', '[').replace('>', ']').replace(':','：').replace(
+    '?','？').replace('"','``').replace('|', '$').replace ('\n', '-')
 path = 'all_items/' + item_name
 if not os.path.exists (path):
     os.makedirs (path)
