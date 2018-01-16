@@ -1,9 +1,11 @@
-def tmall(driver, time, re, urllib, path, ActionChains, Keys):
+def tmall_hk(driver, time, re, urllib, path, ActionChains, Keys):
     driver.maximize_window()
     time.sleep(3)
-    driver.find_element_by_xpath(".//*/li[@id='J_ItemRates']/div[@class='tm-indcon']").click()
+    driver.execute_script ("window.scrollBy(0,500)")
+    driver.execute_script ("window.scrollBy(0,500)")
+    driver.find_element_by_xpath(".//*[@id='J_TabBar']/li[2]/a").click()
     time.sleep(1)
-    driver.find_element_by_xpath(".//*/span[@class='rate-filter']/input[@class='rate-list-picture rate-radio-group']").send_keys(Keys.SPACE)
+    driver.find_element_by_xpath(".//*[@class='rate-filter']/input[@class='rate-list-picture rate-radio-group']").send_keys(Keys.SPACE)
     time.sleep(3)
 
     while True:
@@ -20,12 +22,12 @@ def tmall(driver, time, re, urllib, path, ActionChains, Keys):
             try:
                 p = img_ele.find_element_by_xpath("./../../../../../following-sibling::td[@class='col-meta']/div[@class='rate-sku']").text.replace ('/', '-').replace ('\\', '--').replace('\n', '-') # p = '颜色分类：01黑色尺码：42[偏大一码]'
                 d = img_ele.find_element_by_xpath("./../../../../following-sibling::div[1]").text.replace ('/', '-').replace ('\\', '--')
-                c = img_ele.find_element_by_xpath("./../../../preceding-sibling::div[1]").text
+                # c = img_ele.find_element_by_xpath("./../../../preceding-sibling::div[1]").text
             except Exception as e:
                 print("ERROR happens when getting corresponding property of img :::", e)
             datetime_list.append (d)
             property_list.append (p)
-            comment_list.append (c)
+            # comment_list.append (c)
 
         # 四个列表长度一致，所以可以用同一个指针i来对四个列表同步遍历
         for i in range(len(img_ele_list)):
@@ -33,11 +35,12 @@ def tmall(driver, time, re, urllib, path, ActionChains, Keys):
             with open (path + '/' + property_list[i] + '-' + datetime_list[i] + '-' + str(time.time()) + '.jpg', 'wb+') as f_img:
                 try:
                     f_img.write (urllib.request.urlopen (url).read ())
+                    pass
                 except:
                     print("Img url illegal: " + url)
                 else:
-                    print ("A new img!!! PROPERTY = %s, DATETIME = %s\n, COMMENT = %s\n, DOWALOADING url = %s"
-                           %(property_list[i], datetime_list[i], comment_list[i], url))
+                    print ("A new img!!! PROPERTY = %s, DATETIME = %s\n, DOWALOADING url = %s"
+                           %(property_list[i], datetime_list[i], url))
 
         # ---------------翻页---------------
         # driver.execute_script ("window.scrollBy(0,-100)")

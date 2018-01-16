@@ -16,8 +16,8 @@ def taobao(driver, time, re, urllib, path, ActionChains, Keys):
         datetime_list = []
         comment_list = []
 
-        p, d, c = '', '', ''
         for img_ele in img_ele_list:
+            p, d, c = '', '', ''
             try:
                 p = img_ele.find_element_by_xpath("./../../../following-sibling::div[1]/div[@class='tb-r-info']") # p = '2017年11月27日 10:06颜色分类：红色  参考身高：130cm'
                 d = re.findall (r'^20[0-9][0-9].[0-1][0-9].[0-3][0-9].', p.text)
